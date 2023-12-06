@@ -2,16 +2,16 @@
 
 namespace App\Domain\BasicAuth;
 
-class CheckBasicAuth
+class Authorization
 {
     /**
      * @var BasicAuthInterface
      */
-    private BasicAuthInterface $basic;
+    private AuthInterface $credential;
 
-    public function __construct(BasicAuthInterface $basic)
+    public function __construct(AuthInterface $credential)
     {
-        $this->basic = $basic;
+        $this->credential = $credential;
     }
 
     /**
@@ -21,6 +21,6 @@ class CheckBasicAuth
      */
     public function checkAuthorization(): bool
     {
-        return $this->basic->checkCredentials();
+        return $this->credential->checkCredentials();
     }
 }

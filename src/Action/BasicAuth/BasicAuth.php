@@ -3,10 +3,10 @@
 namespace App\Action\BasicAuth;
 
 use Symfony\Component\HttpFoundation\RequestStack;
-use App\Domain\BasicAuth\BasicAuthInterface;
+use App\Domain\BasicAuth\AuthInterface;
 
 
-class BasicAuth implements BasicAuthInterface
+class BasicAuth implements AuthInterface
 {
     private $requestStack;
 

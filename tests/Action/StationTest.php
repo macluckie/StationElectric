@@ -5,7 +5,7 @@ namespace App\Tests\Action;
 use PHPUnit\Framework\TestCase;
 use App\Entity\Station;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Action\StationService;
+use App\Action\StationAction;
 use App\Repository\StationRepository;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\HttpFoundation\InputBag;
@@ -33,13 +33,13 @@ class StationTest extends TestCase
 
         $mockEntityanager = $this->createConfiguredMock(EntityManagerInterface::class, ['getRepository' => $mockStationRepository]);
         $mockStationRepo = $this->createConfiguredMock(StationRepo::class, ['getStationsAction' => $stations]);
-        $action = new StationService($mockEntityanager, $mockStationRepo);
-        $this->assertEquals(2, count($action->getStationsAction($this->mockRequestStack())));
-        $this->assertEquals('App\Entity\Station', get_class($action->getStationsAction($this->mockRequestStack())[0]));
-        $this->assertEquals('amenageur1', $action->getStationsAction($this->mockRequestStack())[0]->getAmenageur());
-        $this->assertEquals('operateur1', $action->getStationsAction($this->mockRequestStack())[0]->getOperateur());
-        $this->assertEquals('amenageur2', $action->getStationsAction($this->mockRequestStack())[1]->getAmenageur());
-        $this->assertEquals('operateur2', $action->getStationsAction($this->mockRequestStack())[1]->getOperateur());
+        $action = new StationAction($mockStationRepo);
+        $this->assertEquals(2, count($action->stationsAtPosition($this->mockRequestStack())));
+        $this->assertEquals('App\Entity\Station', get_class($action->stationsAtPosition($this->mockRequestStack())[0]));
+        $this->assertEquals('amenageur1', $action->stationsAtPosition($this->mockRequestStack())[0]->getAmenageur());
+        $this->assertEquals('operateur1', $action->stationsAtPosition($this->mockRequestStack())[0]->getOperateur());
+        $this->assertEquals('amenageur2', $action->stationsAtPosition($this->mockRequestStack())[1]->getAmenageur());
+        $this->assertEquals('operateur2', $action->stationsAtPosition($this->mockRequestStack())[1]->getOperateur());
         $this->removeCachedStations();
     }
 
@@ -57,11 +57,9 @@ class StationTest extends TestCase
         $mockObRequest = $this->createConfiguredMock(Request::class, []);
         $mockObRequest->query = $inputBag;
         $mockRequestStack = $this->createConfiguredMock(RequestStack::class, ['getCurrentRequest' => $this->mockRequest()]);
-        $mockStationRepository = $this->createConfiguredMock(StationRepository::class, ['findAllStationsNearMe' => $stations]);
-        $mockEntityanager = $this->createConfiguredMock(EntityManagerInterface::class, ['getRepository' => $mockStationRepository]);
         $mockStationRepo = $this->createConfiguredMock(StationRepo::class, ['getStationsAction' => []]);
 
-        $action = new StationService($mockEntityanager, $mockStationRepo);
+        $action = new StationAction($mockStationRepo);
 
         $this->assertEquals(count($stations), count($action->getLatLon($mockRequestStack)));
     }
@@ -76,7 +74,7 @@ class StationTest extends TestCase
         $mockEntityanager = $this->createConfiguredMock(EntityManagerInterface::class, ['getRepository' => $mockStationRepository]);
         $mockStationRepo = $this->createConfiguredMock(StationRepo::class, ['getStationsAction' => []]);
 
-        $action = new StationService($mockEntityanager, $mockStationRepo);
+        $action = new StationAction($mockStationRepo);
         $this->assertEquals(0, count($action->getLatLon($mockRequestStack)));
     }
 

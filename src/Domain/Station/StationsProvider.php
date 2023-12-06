@@ -5,19 +5,19 @@ namespace App\Domain\Station;
 use App\Entity\Station;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class StationService
+class StationsProvider
 {
     /**
      * @var ServiceInterface
      */
-    private ServiceInterface $stationAction;
+    private ActionInterface $stationAction;
 
     /**
      * @var RequestStack
      */
     private RequestStack $request;
 
-    public function __construct(ServiceInterface $stationAction, RequestStack $request)
+    public function __construct(ActionInterface $stationAction, RequestStack $request)
     {
         $this->stationAction = $stationAction;
         $this->request       = $request;

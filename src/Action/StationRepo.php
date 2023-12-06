@@ -38,13 +38,7 @@ class StationRepo
      * @param string $queryBy
      * @return array<Station>
      */
-    public function getStationsAction(array $position, string $collectionName, string $searchValue, string $queryBy, ?string $fielToFilter, ?string $filterValue): array
-    {
-        $stations = $this->getStationFiltered($position, $collectionName, $searchValue, $queryBy, $fielToFilter, $filterValue);
-        return $stations;
-    }
-
-    private function getStationFiltered(array $position, string $collectionName, string $searchValue, string $queryBy, ?string $fielToFilter, ?string $filterValue): array
+    public function getStationsByFilters(array $position, string $collectionName, string $searchValue, string $queryBy, ?string $fielToFilter, ?string $filterValue): array
     {
         $url =  $this->createURL($position, $collectionName, $searchValue, $queryBy, $fielToFilter, $filterValue);
         $response = $this->client->request(
@@ -62,6 +56,7 @@ class StationRepo
         $result = $this->serializeData($dataArray['hits']);
         return $result;
     }
+
     private function createURL(array $position, string $collectionName, string $searchValue, string $queryBy, ?string $fielToFilter, ?string $filterValue): string
     {
         $url = $_ENV['TYPESENSE_URL'] . 'collections/' . $collectionName . '/documents/search';

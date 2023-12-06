@@ -2,7 +2,7 @@
 
 namespace App\Domain\BasicAuth;
 
-interface BasicAuthInterface
+interface AuthInterface
 {
     public function checkCredentials(): bool;
 }

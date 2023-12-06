@@ -2,20 +2,13 @@
 
 namespace App\Action;
 
-use App\Domain\Station\ServiceInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Domain\Station\ActionInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 
-class StationService implements ServiceInterface
+class StationAction implements ActionInterface
 {
-    /**
-     *
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $em;
-
     /**
      * 
      * @var StationRepo
@@ -23,19 +16,18 @@ class StationService implements ServiceInterface
     private $stationRepo;
 
 
-    public function __construct(EntityManagerInterface $em, StationRepo $stationRepo)
+    public function __construct(StationRepo $stationRepo)
     {
-        $this->em = $em;
         $this->stationRepo = $stationRepo;
     }
 
-    public function getStationsAction(RequestStack $request): array
+    public function stationsAtPosition(RequestStack $request): array
     {
         $position = $this->getLatLon($request);
         if($position[0] == null || $position[1]  == null){
             throw new HttpException(401, 'error: position not found');
         }
-        $station = $this->stationRepo->getStationsAction($position, 'stations','*','NomStation', 'Coordo',
+        $station = $this->stationRepo->getStationsByFilters($position, 'stations','*','NomStation', 'Coordo',
         $position[0].','.$position[1]);
         return  $station;
     }

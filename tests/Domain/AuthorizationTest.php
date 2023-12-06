@@ -4,26 +4,26 @@ namespace App\Tests\Domain;
 
 use PHPUnit\Framework\TestCase;
 use App\Tests\UtilsTest;
-use App\Domain\BasicAuth\CheckBasicAuth;
+use App\Domain\BasicAuth\Authorization;
 use App\Action\BasicAuth\BasicAuth;
 
 
 
-class CheckBasicAuthTest extends TestCase
+class AuthorizationTest extends TestCase
 {
     use UtilsTest;
 
     public function  testCheckCredentialsFalse()
     {
         $basicAction = $this->getMockBasicAuthFalse();
-        $check = new CheckBasicAuth($basicAction);
+        $check = new Authorization($basicAction);
         $this->assertFalse($check->checkAuthorization());
     }
 
     public function  testCheckCredentialstrue()
     {
         $basicAction = $this->getMockBasicAuthTrue();
-        $check = new CheckBasicAuth($basicAction);
+        $check = new Authorization($basicAction);
         $this->assertTrue($check->checkAuthorization());
     }
 

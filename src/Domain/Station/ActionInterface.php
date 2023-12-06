@@ -5,10 +5,10 @@ namespace App\Domain\Station;
 use App\Entity\Station;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-interface ServiceInterface
+interface ActionInterface
 {
     /**
      * @return array<Station>
      */
-    public function getStationsAction(RequestStack $request): array;
+    public function stationsAtPosition(RequestStack $request): array;
 }

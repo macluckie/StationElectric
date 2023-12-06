@@ -3,14 +3,14 @@
 namespace App\Tests\Domain;
 
 use PHPUnit\Framework\TestCase;
-use App\Domain\Station\StationService;
-use App\Action\StationService as StationAction;
+use App\Domain\Station\StationsProvider;
+use App\Action\StationAction;
 use App\Tests\UtilsTest;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\Request;
 
-class StationServiceTest extends TestCase
+class StationProviderTest extends TestCase
 {
     use UtilsTest;
 
@@ -18,14 +18,14 @@ class StationServiceTest extends TestCase
     {
         $stations = $this->dataproviderStations();
         $mockStationAction = $this->getMockStations($stations);
-        $stationD = new StationService($mockStationAction, $this->mockRequestStack());
+        $stationD = new StationsProvider($mockStationAction, $this->mockRequestStack());
         $this->assertEquals(2, count($stationD->getStations()));
     }
 
     public function testGetStationsWhenNotFound(): void
     {
         $mockStationAction = $this->getMockStationsEmpty();
-        $stationD = new StationService($mockStationAction, $this->mockRequestStack());
+        $stationD = new StationsProvider($mockStationAction, $this->mockRequestStack());
         $this->assertEquals(0, count($stationD->getStations()));
     }
 
