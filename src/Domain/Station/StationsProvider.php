@@ -31,7 +31,7 @@ class StationsProvider
     {
         $stations = null;
         try {
-            $stations = $this->stationAction->getStationsAction($this->request);
+            $stations = $this->stationAction->stationsAtPosition($this->request);
         } catch (\Throwable $th) {
             $stations = [$th->getMessage()];
         }

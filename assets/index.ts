@@ -1,4 +1,4 @@
-import { MapStreet } from './mapStreet';
+import { MapBuilder } from './mapBuilder';
 
 (async () => {
     if (!navigator.geolocation) {
@@ -85,7 +85,7 @@ import { MapStreet } from './mapStreet';
     }
 
     let zoom: number = 10;
-    let m = new MapStreet(Number(latitude), Number(longitude), zoom);
+    let m = new MapBuilder(Number(latitude), Number(longitude), zoom);
     let map = m.mapBuilder(stationsArray);
 
     map.theMap.on('zoom', async (z) => {

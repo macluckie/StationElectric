@@ -1,5 +1,5 @@
 
-export class MapStreet {
+export class MapBuilder {
     lat: number;
     lon: number;
     zoom: number;

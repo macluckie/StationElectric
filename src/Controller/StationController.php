@@ -48,8 +48,8 @@ class StationController extends AbstractController
             return $this->json('user not allowed', 401);
         }
         $rp = new StationRepo($this->client,$this->serializer);
-        $stationAction = new StationAction($rp);
-        $serviceDomain = new StationsProvider($stationAction, $this->request);
-        return $this->json(['stations' => $serviceDomain->getStations()], 200);
+        $action = new StationAction($rp);
+        $service = new StationsProvider($action, $this->request);
+        return $this->json(['stations' => $service->getStations()], 200);
     }
 }

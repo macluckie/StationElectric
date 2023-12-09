@@ -1,25 +1,19 @@
 version: "3"
-networks:
-  mynetwork:
-    ipam:
-      config:
-        - subnet: 173.20.0.0/24
-
-
 services: 
-    php:
-        build: ./
+    phpfpm:
+        build: .
         volumes:     
-            - ./testProject:/var/www/html/
-            - ./testProject/confphp/php.ini:/usr/local/etc/php/php.ini
-
+            - .:/var/www/html/
+            - ./confphp/php.ini:/usr/local/etc/php/php.ini
+    nginx:
+        image: nginx:latest
         ports:
-            - 8081:8081 
-        command: php -S 173.20.0.3:8081    
-
-        networks:
-            mynetwork:
-                ipv4_address: 173.20.0.3
+           - "80:80"
+        volumes:
+           - .:/var/www/html
+           - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+           - phpfpm            
 
     database:
         image: postgres:${POSTGRES_VERSION:-13}-alpine
@@ -32,34 +26,20 @@ services:
         ports:
             - "5432:5432"
 
-        networks:
-            mynetwork:
-                ipv4_address: 173.20.0.5    
-
-
     encore:
         image: node:19-alpine
         volumes:
-            - ./testProject:/app:rw
-            - ./testProject/node_modules:/usr/app/node_modules
+            - .:/app:rw
+            - ./node_modules:/usr/app/node_modules
         ports:
             - "8082:8080"
         working_dir: /app
-        command: ["yarn", "install"] 
-
-        networks:
-            mynetwork:
-                ipv4_address: 173.20.0.7            
-
-
+        command: ["yarn", "install"]
 
     adminer:
         image: adminer
         ports:
-           - 8080:8080   
-        networks:
-            mynetwork:
-                ipv4_address: 173.20.0.6  
+           - 8080:8080
 
     typesense:
         image: typesense/typesense:0.23.1
@@ -72,9 +52,6 @@ services:
 
         volumes:
             - ./testProject/data:/data 
-        networks:
-            mynetwork:
-                ipv4_address: 173.20.0.4      
 
     golang:
         build: 
@@ -85,11 +62,6 @@ services:
         ports:
             - 4002:8080
         command: go run cmd/main.go
-
-        networks:
-            mynetwork:
-                ipv4_address: 173.20.0.10
-                
                    
 
   

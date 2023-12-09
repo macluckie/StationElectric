@@ -32,7 +32,7 @@ class StationTest extends TestCase
         $mockStationRepository = $this->createConfiguredMock(StationRepository::class, ['findAllStationsNearMe' => $stations]);
 
         $mockEntityanager = $this->createConfiguredMock(EntityManagerInterface::class, ['getRepository' => $mockStationRepository]);
-        $mockStationRepo = $this->createConfiguredMock(StationRepo::class, ['getStationsAction' => $stations]);
+        $mockStationRepo = $this->createConfiguredMock(StationRepo::class, ['getStationsByFilters' => $stations]);
         $action = new StationAction($mockStationRepo);
         $this->assertEquals(2, count($action->stationsAtPosition($this->mockRequestStack())));
         $this->assertEquals('App\Entity\Station', get_class($action->stationsAtPosition($this->mockRequestStack())[0]));
@@ -57,7 +57,7 @@ class StationTest extends TestCase
         $mockObRequest = $this->createConfiguredMock(Request::class, []);
         $mockObRequest->query = $inputBag;
         $mockRequestStack = $this->createConfiguredMock(RequestStack::class, ['getCurrentRequest' => $this->mockRequest()]);
-        $mockStationRepo = $this->createConfiguredMock(StationRepo::class, ['getStationsAction' => []]);
+        $mockStationRepo = $this->createConfiguredMock(StationRepo::class, ['getStationsByFilters' => []]);
 
         $action = new StationAction($mockStationRepo);
 
@@ -72,7 +72,7 @@ class StationTest extends TestCase
         $mockRequestStack = $this->createConfiguredMock(RequestStack::class, ['getCurrentRequest' => $mockObRequest]);
         $mockStationRepository = $this->createConfiguredMock(StationRepository::class, ['findAllStationsNearMe' => []]);
         $mockEntityanager = $this->createConfiguredMock(EntityManagerInterface::class, ['getRepository' => $mockStationRepository]);
-        $mockStationRepo = $this->createConfiguredMock(StationRepo::class, ['getStationsAction' => []]);
+        $mockStationRepo = $this->createConfiguredMock(StationRepo::class, ['getStationsByFilters' => []]);
 
         $action = new StationAction($mockStationRepo);
         $this->assertEquals(0, count($action->getLatLon($mockRequestStack)));

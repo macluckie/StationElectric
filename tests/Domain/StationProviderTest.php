@@ -31,13 +31,13 @@ class StationProviderTest extends TestCase
 
     private function getMockStations(array $stations): StationAction
     {
-        $mock = $this->createConfiguredMock(StationAction::class, ['getStationsAction' => $stations]);
+        $mock = $this->createConfiguredMock(StationAction::class, ['stationsAtPosition' => $stations]);
         return $mock;
     }
 
     private function getMockStationsEmpty(): StationAction
     {
-        $mock = $this->createConfiguredMock(StationAction::class, ['getStationsAction' => []]);
+        $mock = $this->createConfiguredMock(StationAction::class, ['stationsAtPosition' => []]);
         return $mock;
     }
 
