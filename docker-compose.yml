@@ -1,68 +1,89 @@
 version: "3"
-services: 
-    phpfpm:
-        build: .
-        volumes:     
-            - .:/var/www/html/
-            - ./confphp/php.ini:/usr/local/etc/php/php.ini
-    nginx:
-        image: nginx:latest
-        ports:
-           - "80:80"
-        volumes:
-           - .:/var/www/html
-           - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-        depends_on:
-           - phpfpm            
+services:
+  phpfpm:
+    build: .
+    volumes:
+      - .:/var/www/html
+      - ./confphp/php.ini:/usr/local/etc/php/php.ini
+    networks:
+      - mynetwork
 
-    database:
-        image: postgres:${POSTGRES_VERSION:-13}-alpine
-        environment:
-            POSTGRES_DB: ${POSTGRES_DB:-app}
-            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ChangeMe}
-            POSTGRES_USER: ${POSTGRES_USER:-symfony}
-        volumes:
-            - /db:/var/lib/postgresql/data:rw
-        ports:
-            - "5432:5432"
+  ng:
+    image: nginx:latest
+    ports:
+      - "8001:80"
+    volumes:
+      - .:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - phpfpm
+    networks:
+      - mynetwork
 
-    encore:
-        image: node:19-alpine
-        volumes:
-            - .:/app:rw
-            - ./node_modules:/usr/app/node_modules
-        ports:
-            - "8082:8080"
-        working_dir: /app
-        command: ["yarn", "install"]
+  varnish:
+    image: varnish:stable
+    ports:
+      - "8081:80"
+    command: "-p default_keep=300"  
+    # tmpfs:
+    #   - /var/lib/varnish:exec  
+    environment:
+      - VARNISH_SIZE=2G  
+    volumes:
+      - ./default.vcl:/etc/varnish/default.vcl:ro
+    networks:
+      - mynetwork
+    depends_on:
+      - "ng"  
 
-    adminer:
-        image: adminer
-        ports:
-           - 8080:8080
+  database:
+    image: postgres:${POSTGRES_VERSION:-13}-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ChangeMe}
+      POSTGRES_USER: ${POSTGRES_USER:-symfony}
+    volumes:
+      - ./db:/var/lib/postgresql/data:rw
+    ports:
+      - "5432:5432"
+    networks:
+      - mynetwork
 
-    typesense:
-        image: typesense/typesense:0.23.1
-        ports:
-            - "8108:8108"
-  
-        environment:
-            TYPESENSE_DATA_DIR: /data
-            TYPESENSE_API_KEY: a00c45f7-808e-4e66-8e1f-cf73a334c452               
+  encore:
+    image: node:19-alpine
+    volumes:
+      - .:/app:rw
+      - ./node_modules:/usr/app/node_modules
+    ports:
+      - "8082:8080"
+    working_dir: /app
+    command: ["yarn", "install"]
+    networks:
+      - mynetwork
 
-        volumes:
-            - ./testProject/data:/data 
+  typesense:
+    image: typesense/typesense:0.23.1
+    ports:
+      - "8108:8108"
+    environment:
+      TYPESENSE_DATA_DIR: /data
+      TYPESENSE_API_KEY: a00c45f7-808e-4e66-8e1f-cf73a334c452
+    volumes:
+      - ./testProject/data:/data
+    networks:
+      - mynetwork
 
-    golang:
-        build: 
-            context: . 
-            dockerfile: ./sync.Dockerfile
-        volumes:
-            - ./sync-stations:/go/src/app:rw
-        ports:
-            - 4002:8080
-        command: go run cmd/main.go
-                   
+  golang:
+    build:
+      context: .
+      dockerfile: ./sync.Dockerfile
+    volumes:
+      - ./sync-stations:/go/src/app:rw
+    ports:
+      - 4002:8080
+    command: go run cmd/main.go
+    networks:
+      - mynetwork
 
-  
-    
+networks:
+  mynetwork:

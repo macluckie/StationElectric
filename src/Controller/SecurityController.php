@@ -9,12 +9,10 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Security\ClienHttp;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use App\Domain\Oauth2\OauthGoogle;
 use App\Action\Oauth2\AuthGoogleAction;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 
 class SecurityController extends AbstractController
@@ -33,15 +31,13 @@ class SecurityController extends AbstractController
         if ($this->getUser()) {
             return $this->redirectToRoute('app_station');
         }
-        // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
     #[Route(path: '/google', name: 'app_oauth2')]
-    public function loginGoogle(AuthenticationUtils $authenticationUtils, Request $request): RedirectResponse
+    public function loginGoogle(Request $request): RedirectResponse
     {    
         $oauth2Action = new AuthGoogleAction($request, $this->client);
         $url = $oauth2Action->urlAUTH();

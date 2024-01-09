@@ -2,7 +2,7 @@
 
 namespace App\Domain\Oauth2;
 
-use App\Entity\User;
+use App\Domain\Entity\User;
 
 class OauthGoogle
 {

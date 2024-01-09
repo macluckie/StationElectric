@@ -131,8 +131,6 @@ func (repo *RepoHttp) PostCollectionDocuments(data []Station) (*http.Response, e
 	if er != nil {
 		return nil, er
 	}
-	fmt.Println("COUCOUCOUlskdlksdklkslklskd")
-	fmt.Println(res.Status)
 	defer res.Body.Close()
 	return res, nil
 }
@@ -200,10 +198,8 @@ func writeInJSONFile(file *os.File, data []Station) error {
 func handleLocation(station Station) (Station, error) {
 	location := station.Coordonnees
 	locationSplit := strings.Split(location, ",")
-	// result := []string{}
 	var lon float64
 	var lat float64
-	// separate := ","
 	for i, val := range locationSplit {
 		if i == 1 {
 			latArray := strings.Split(val, "]")

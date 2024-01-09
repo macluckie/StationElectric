@@ -8,8 +8,9 @@
 /var/
 /db
 /data
+/testProject
 token.txt
-/vendor/
+/vendor
 ###< symfony/framework-bundle ###
 /.env
 ###> phpunit/phpunit ###

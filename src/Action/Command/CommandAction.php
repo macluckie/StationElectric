@@ -8,7 +8,13 @@ use App\Domain\Command\CommandInterface;
 class CommandAction implements CommandInterface
 {
 
-    public function csvToArray(string $CSVPath)
+    /**
+     * Undocumented function
+     *
+     * @param string $CSVPath
+     * @return array<string>
+     */
+    public function csvToArray(string $CSVPath): array
     {
         $array = [];
         if (($open = fopen($CSVPath, "r")) !== false) {

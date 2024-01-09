@@ -3,7 +3,7 @@
 namespace App\Action\Oauth2;
 
 use App\Domain\Oauth2\RepositoryInterface;
-use App\Entity\User;
+use App\Domain\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
 class RepositoryAction implements RepositoryInterface
@@ -30,10 +30,6 @@ class RepositoryAction implements RepositoryInterface
     public function checkUserExist(User $user): ?User
     {
         $userExist =  $this->em->getRepository(User::class)->findBy(['email' => $user->getEmail()]);
-        if (count($userExist) > 0) {
-            return $userExist[0];
-        } else {
-            return null;
-        }
+        return count($userExist) > 0 ? $userExist[0] : null;
     }
 }

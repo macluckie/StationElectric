@@ -2,7 +2,7 @@
 
 namespace App\Tests;
 
-use App\Entity\Station;
+use App\Domain\Entity\Station;
 
 trait UtilsTest
 {

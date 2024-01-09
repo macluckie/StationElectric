@@ -3471,6 +3471,18 @@ klona@^2.0.4:
   resolved "https://registry.npmjs.org/klona/-/klona-2.0.5.tgz"
   integrity sha512-pJiBpiXMbt7dkzXe8Ghj/u4FfXOOa98fPW+bihOJ4SjnoijweJrNThJfd3ifXpXhREjpoF2mZVH1GfS9LV3kHQ==
 
+leaflet-search@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/leaflet-search/-/leaflet-search-4.0.0.tgz#7265ab813ea915213027f30729a736cb4234402a"
+  integrity sha512-V+Y7DURVoy6Y9ZGywfyorDRMYDbLwpWPA0yec+g2aW+iNZySdwv936jDZJtRfYxvkPRMEb8jDjH+Zf3nSFTPEw==
+  dependencies:
+    leaflet "*"
+
+leaflet@*:
+  version "1.9.4"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.9.4.tgz#23fae724e282fa25745aff82ca4d394748db7d8d"
+  integrity sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA==
+
 lilconfig@^2.0.3:
   version "2.0.6"
   resolved "https://registry.npmjs.org/lilconfig/-/lilconfig-2.0.6.tgz"

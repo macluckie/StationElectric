@@ -11,6 +11,7 @@ RUN docker-php-ext-install pdo pdo_mysql
 # RUN cd /var/www/html && composer create-project symfony/skeleton:"6.1.*" projectTest
 COPY . /var/www/html
 WORKDIR /var/www/html
+EXPOSE 8080
 CMD ["php-fpm"]
 # COPY ./vhosts/dimitri.conf /etc/apache2/sites-available/
 # RUN a2ensite dimitri.conf

@@ -2,7 +2,7 @@
 
 namespace App\Domain\Station;
 
-use App\Entity\Station;
+use App\Domain\Entity\Station;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class StationsProvider

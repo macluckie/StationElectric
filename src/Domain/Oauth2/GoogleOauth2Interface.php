@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Domain\Oauth2;
-use App\Entity\User;
+use App\Domain\Entity\User;
 
 
 interface GoogleOauth2Interface

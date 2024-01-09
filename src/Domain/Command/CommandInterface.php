@@ -3,5 +3,5 @@
 namespace App\Domain\Command;
 
 interface CommandInterface {
-    public function csvToArray(string $CSVPath);
+    public function csvToArray(string $CSVPath): array;
 }

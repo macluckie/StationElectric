@@ -3,7 +3,7 @@
 namespace App\Action\Command;
 
 use App\Domain\Command\CommandRepositoryInterface;
-use App\Entity\Station;
+use App\Domain\Entity\Station;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CommandRepository implements CommandRepositoryInterface

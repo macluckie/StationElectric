@@ -88,42 +88,42 @@ import { MapBuilder } from './mapBuilder';
     let m = new MapBuilder(Number(latitude), Number(longitude), zoom);
     let map = m.mapBuilder(stationsArray);
 
-    map.theMap.on('zoom', async (z) => {
-        let center = map.theMap.getCenter();
-        let position: Position = { lon: center.lng, lat: center.lat }
-        let stations = await getStations(position);
-        // m.group.clearLayers();
+    // map.theMap.on('zoom', async (z) => {
+    //     let center = map.theMap.getCenter();
+    //     let position: Position = { lon: center.lng, lat: center.lat }
+    //     let stations = await getStations(position);
+    //     // m.group.clearLayers();
 
-        stations.stations.map((station): void => {
-            try {
-                let marker = map.l.marker([station.consolidatedLatitude, station.consolidatedLongitude]);
-                marker.addTo(m.group);
-            } catch (error) {
-                console.log("ERRORRRRRR" + error);
-            }
-        })
-    });
+    //     stations.stations.map((station): void => {
+    //         try {
+    //             let marker = map.l.marker([station.consolidatedLatitude, station.consolidatedLongitude]);
+    //             marker.addTo(m.group);
+    //         } catch (error) {
+    //             console.log("ERRORRRRRR" + error);
+    //         }
+    //     })
+    // });
 
-    map.theMap.on('moveend', async (z) => {
-        let center = map.theMap.getCenter();
-        let position: Position = { lon: center.lng, lat: center.lat };
-        let stations = await getStations(position);
-        // m.group.clearLayers();
+    // map.theMap.on('moveend', async (z) => {
+    //     let center = map.theMap.getCenter();
+    //     let position: Position = { lon: center.lng, lat: center.lat };
+    //     let stations = await getStations(position);
+    //     // m.group.clearLayers();
 
-        stations.stations.map((station): void => {
-            try {
-                let marker = map.l.marker([station.consolidatedLatitude, station.consolidatedLongitude]);
-                marker.addTo(m.group);
-            } catch (error) {
-                console.log("ERRORRRRRR" + error);
-            }
-        })
-    });
+    //     stations.stations.map((station): void => {
+    //         try {
+    //             let marker = map.l.marker([station.consolidatedLatitude, station.consolidatedLongitude]);
+    //             marker.addTo(m.group);
+    //         } catch (error) {
+    //             console.log("ERRORRRRRR" + error);
+    //         }
+    //     })
+    // });
 
 })();
 
 async function getStations(position: Position) {
-    let url = 'http://localhost:8081/stations' + '?latitude=' + position.lat + '&longitude=' + position.lon;
+    let url = 'http://localhost:8081/stations';
     let stations = await fetch(url, {
         method: 'GET',
         headers: {
